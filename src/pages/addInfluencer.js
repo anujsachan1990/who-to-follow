@@ -14,7 +14,7 @@ export default function AddInfluencer({ data, location }) {
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
-      <ProtectedRoute role={availableRoles.INFLUENCER_SUPER_ADMIN}>
+      <ProtectedRoute role={availableRoles.INFLUENCER_CONTRIBUTOR}>
         <Navigation />
         <h1 className="title">Add an Influencer</h1>
         <p className="subtitle">

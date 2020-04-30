@@ -14,7 +14,6 @@ export const Navigation = () => {
   } = useAuth0()
 
   const isSuperAdmin = checkUserForRole(availableRoles.INFLUENCER_SUPER_ADMIN)
-  console.log(isSuperAdmin)
   return (
     <nav>
       {!isAuthenticated && !loading && (

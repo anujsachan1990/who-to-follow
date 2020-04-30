@@ -11,7 +11,7 @@ const defaultContext = {
   loading: false,
   popupOpen: false,
   availableRoles: {},
-  checkUscheckUserForRole: () => {},
+  checkUserForRole: () => {},
   loginWithPopup: () => {},
   handleRedirectCallback: () => {},
   getIdTokenClaims: () => {},
