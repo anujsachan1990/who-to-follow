@@ -10,6 +10,8 @@ const defaultContext = {
   user: null,
   loading: false,
   popupOpen: false,
+  availableRoles: {},
+  checkUscheckUserForRole: () => {},
   loginWithPopup: () => {},
   handleRedirectCallback: () => {},
   getIdTokenClaims: () => {},
