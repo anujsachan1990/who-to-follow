@@ -1,11 +1,23 @@
 import { useEffect } from "react"
 import { useAuth0 } from "../utils/auth"
+import { navigate } from "gatsby"
 
-export const ProtectedRoute = ({ children }) => {
-  const { loading, isAuthenticated, loginWithRedirect } = useAuth0()
+export const ProtectedRoute = ({ children, role }) => {
+  const {
+    loading,
+    isAuthenticated,
+    loginWithRedirect,
+    availableRoles,
+    checkUserForRole,
+  } = useAuth0()
   useEffect(() => {
-    if (loading || isAuthenticated) {
+    if (loading) return undefined
+    if (isAuthenticated && !role) return undefined
+    if (checkUserForRole(role)) {
       return undefined
+    } else {
+      //if user is authenticated but doesn't have the right role, send them home
+      return navigate("/")
     }
     const asyncLogin = async () => {
       await loginWithRedirect({

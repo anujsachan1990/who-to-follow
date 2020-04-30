@@ -54,7 +54,7 @@ export default function () {
         },
       })
       if (res.status !== 200) {
-        console.error("Failed to submit talk")
+        console.error("Failed to create influencer")
       } else {
         clearInput()
       }

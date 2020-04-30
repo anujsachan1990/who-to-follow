@@ -15,7 +15,7 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 exports.handler = async (event, context, callback) => {
   try {
     user = await checkHeaderForValidToken(event.headers)
-    checkUserForRole(user, availableRoles.INFLUENCER_CONTRIBUTOR)
+    checkUserForRole(user, availableRoles.INFLUENCER_SUPER_ADMIN)
   } catch (err) {
     console.error(err)
     return {
@@ -24,24 +24,20 @@ exports.handler = async (event, context, callback) => {
     }
   }
 
-  const body = JSON.parse(event.body)
   let statusCode = 200
   let returnBody = {}
-  if (!body.name || !body.handle || !body.tags) {
-    statusCode = 403
-    returnBody = {
-      msg: "Each influencer must include a name, handle, and tags",
-    }
-  } else {
-    try {
-      body.approved = false
-      const record = await table.create(body)
-      returnBody = { record }
-    } catch (err) {
-      console.error(err)
-      statusCode = 500
-      returnBody = { msg: "Failed to create record in Airtable" }
-    }
+
+  try {
+    const records = await table
+      .select({
+        filterByFormula: `{approved} = FALSE()`,
+      })
+      .firstPage()
+    returnBody = { records }
+  } catch (err) {
+    console.error(err)
+    statusCode = 500
+    returnBody = { msg: "Failed to query unapproved influencers in Airtable" }
   }
   return {
     statusCode,

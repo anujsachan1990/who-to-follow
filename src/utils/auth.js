@@ -59,6 +59,16 @@ export const Auth0Provider = ({
     // eslint-disable-next-line
   }, [])
 
+  const checkUserForRole = (role) => {
+    const ROLES_NAMESPACE = "http://jqq-test.com/roles"
+    return !loading && user && role && user[ROLES_NAMESPACE].includes(role)
+  }
+
+  const availableRoles = {
+    INFLUENCER_CONTRIBUTOR: "Influencer Contributor",
+    INFLUENCER_SUPER_ADMIN: "Influencer Super Admin",
+  }
+
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true)
     try {
@@ -90,6 +100,8 @@ export const Auth0Provider = ({
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
+        checkUserForRole,
+        availableRoles,
         getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
         loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
         getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),

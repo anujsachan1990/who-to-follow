@@ -4,7 +4,17 @@ import { useAuth0 } from "../../utils/auth"
 import css from "./index.module.css"
 
 export const Navigation = () => {
-  const { isAuthenticated, loginWithRedirect, logout, loading } = useAuth0()
+  const {
+    isAuthenticated,
+    loginWithRedirect,
+    logout,
+    loading,
+    checkUserForRole,
+    availableRoles,
+  } = useAuth0()
+
+  const isSuperAdmin = checkUserForRole(availableRoles.INFLUENCER_SUPER_ADMIN)
+  console.log(isSuperAdmin)
   return (
     <nav>
       {!isAuthenticated && !loading && (
@@ -31,6 +41,12 @@ export const Navigation = () => {
           <Link className={css.navItem} to="/addInfluencer">
             Add Influencer
           </Link>
+          {isSuperAdmin && (
+            <Link className={css.navItem} to="/dashboard">
+              Dashboard
+            </Link>
+          )}
+
           <Link className={css.navItem} to="/account">
             My Account
           </Link>

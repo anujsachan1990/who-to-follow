@@ -5,6 +5,7 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { Navigation } from "../components/nav-bar"
 import InfluencerStyles from "../styles/influencer.module.css"
+import InfluencerCard from "../components/influencer-card"
 
 const Index = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata.title
@@ -15,8 +16,8 @@ const Index = ({ data, location }) => {
   useEffect(() => {
     const tags = new Set()
     influencers.forEach((influencer) => {
-      if (influencer.data.tags) {
-        influencer.data.tags.forEach((tag) => tags.add(tag))
+      if (influencer.fields.tags) {
+        influencer.fields.tags.forEach((tag) => tags.add(tag))
       }
     })
     setAllTags(["all", ...Array.from(tags)])
@@ -27,7 +28,7 @@ const Index = ({ data, location }) => {
       return setVisibleInfluencers([...influencers])
     }
     setVisibleInfluencers(
-      influencers.filter((influencer) => influencer.data.tags.includes(tag))
+      influencers.filter((influencer) => influencer.fields.tags.includes(tag))
     )
   }
   return (
@@ -53,43 +54,7 @@ const Index = ({ data, location }) => {
       ))}
       <div className={InfluencerStyles.list}>
         {visibleInfluencers.map((node) => {
-          return (
-            <article
-              key={node.recordId}
-              className={InfluencerStyles.influencer}
-            >
-              <header>
-                <h3 className={InfluencerStyles.name}>
-                  <a
-                    href={"https://www.twitter.com/" + node.data.handle}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {node.data.name}
-                  </a>
-                </h3>
-                <p className={InfluencerStyles.handle}>@{node.data.handle}</p>
-                <p className={InfluencerStyles.description}>
-                  {node.data.description}
-                </p>
-                <div className={InfluencerStyles.tagsList}>
-                  {node.data.tags &&
-                    node.data.tags.map((tag, index) => (
-                      <small
-                        className={InfluencerStyles.tag}
-                        key={index}
-                        onClick={() => selectTag(tag)}
-                        role="button"
-                        onKeyDown={() => selectTag(tag)}
-                        tabIndex={0}
-                      >
-                        {tag}
-                      </small>
-                    ))}
-                </div>
-              </header>
-            </article>
-          )
+          return <InfluencerCard node={node} key={node.id} />
         })}
       </div>
     </Layout>
@@ -105,10 +70,10 @@ export const pageQuery = graphql`
         title
       }
     }
-    allAirtable {
+    allAirtable(filter: { data: { approved: { eq: true } } }) {
       nodes {
-        recordId
-        data {
+        id: recordId
+        fields: data {
           name
           handle
           tags
