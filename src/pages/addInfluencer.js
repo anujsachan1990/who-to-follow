@@ -5,14 +5,16 @@ import "../styles/app.css"
 import { Navigation } from "../components/nav-bar"
 import AddInfluencerForm from "../components/add-influencer-form"
 import { ProtectedRoute } from "../components/protected-route"
+import { useAuth0 } from "../utils/auth"
 
 export default function AddInfluencer({ data, location }) {
   const siteTitle = data.site.siteMetadata.title
+  const { availableRoles } = useAuth0()
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
-      <ProtectedRoute>
+      <ProtectedRoute role={availableRoles.INFLUENCER_SUPER_ADMIN}>
         <Navigation />
         <h1 className="title">Add an Influencer</h1>
         <p className="subtitle">
