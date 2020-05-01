@@ -30,7 +30,11 @@ export const Navigation = () => {
         <>
           <button
             className={`${css.authButton} ${css["logout"]}`}
-            onClick={() => logout()}
+            onClick={() =>
+              logout({
+                returnTo: window.location.origin,
+              })
+            }
           >
             Log out
           </button>
