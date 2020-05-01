@@ -13,8 +13,11 @@ export const Navigation = () => {
     availableRoles,
   } = useAuth0()
 
-  const isSuperAdmin = checkUserForRole(availableRoles.INFLUENCER_SUPER_ADMIN)
-  const isContributor = checkUserForRole(availableRoles.INFLUENCER_CONTRIBUTOR)
+  const isSuperAdmin = checkUserForRole([availableRoles.INFLUENCER_SUPER_ADMIN])
+  const isContributor = checkUserForRole([
+    availableRoles.INFLUENCER_CONTRIBUTOR,
+  ])
+  console.log(isSuperAdmin)
   return (
     <nav>
       {!isAuthenticated && !loading && (
@@ -42,7 +45,7 @@ export const Navigation = () => {
           <Link className={css.navItem} to="/">
             Home
           </Link>
-          {isContributor && (
+          {(isContributor || isSuperAdmin) && (
             <Link className={css.navItem} to="/addInfluencer">
               Add Influencer
             </Link>

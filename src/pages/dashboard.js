@@ -10,6 +10,8 @@ import InfluencerCard from "../components/influencer-card"
 export default function Dashboard({ location, data }) {
   const siteTitle = data.site.siteMetadata.title
   const { availableRoles, getTokenSilently, loading } = useAuth0()
+
+  const targetRoles = [availableRoles.INFLUENCER_SUPER_ADMIN]
   const [records, setRecords] = useState([])
 
   useEffect(() => {
@@ -34,12 +36,12 @@ export default function Dashboard({ location, data }) {
       }
     }
     if (!loading) loadUnapprovedInfluencers()
-  }, [loading])
+  }, [loading, getTokenSilently])
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
-      <ProtectedRoute role={availableRoles.INFLUENCER_SUPER_ADMIN}>
+      <ProtectedRoute roles={targetRoles}>
         <Navigation />
         <div className={InfluencerStyles.list}>
           {records.map((node) => {

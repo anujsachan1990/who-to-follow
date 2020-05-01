@@ -13,7 +13,9 @@ const Account = () => {
     availableRoles,
   } = useAuth0()
 
-  const isContributor = checkUserForRole(availableRoles.INFLUENCER_CONTRIBUTOR)
+  const isContributor = checkUserForRole([
+    availableRoles.INFLUENCER_CONTRIBUTOR,
+  ])
   if (loading || !user) {
     return <p>Loading...</p>
   }

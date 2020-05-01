@@ -61,9 +61,20 @@ export const Auth0Provider = ({
     // eslint-disable-next-line
   }, [])
 
-  const checkUserForRole = (role) => {
+  const checkUserForRole = (roles) => {
     const ROLES_NAMESPACE = "http://jqq-test.com/roles"
-    return !loading && user && role && user[ROLES_NAMESPACE].includes(role)
+    if (!user || !user[ROLES_NAMESPACE]) {
+      return false
+    }
+
+    let hasAppropriateRole = false
+    roles.forEach((role) => {
+      if (user[ROLES_NAMESPACE].includes(role)) {
+        hasAppropriateRole = true
+      }
+    })
+
+    return hasAppropriateRole
   }
 
   const availableRoles = {

@@ -15,7 +15,14 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 exports.handler = async (event, context, callback) => {
   try {
     user = await checkHeaderForValidToken(event.headers)
-    checkUserForRole(user, availableRoles.INFLUENCER_CONTRIBUTOR)
+    if (
+      !checkUserForRole(user, [
+        availableRoles.INFLUENCER_CONTRIBUTOR,
+        availableRoles.INFLUENCER_SUPER_ADMIN,
+      ])
+    ) {
+      throw "User does not have the appropriate role"
+    }
   } catch (err) {
     console.error(err)
     return {

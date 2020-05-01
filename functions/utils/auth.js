@@ -11,11 +11,19 @@ const client = jwksClient({
 
 const ROLES_NAMESPACE = "http://jqq-test.com/roles"
 
-const checkUserForRole = (user, role) => {
+const checkUserForRole = (user, roles) => {
   user.roles = user[ROLES_NAMESPACE]
-  if (!user || !user.roles || !user.roles.includes(role)) {
-    throw "User does not have the appropriate role"
+  if (!user || !user.roles) {
+    return false
   }
+  let hasAppropriateRole = false
+  roles.forEach((role) => {
+    if (user.roles.includes(role)) {
+      hasAppropriateRole = true
+    }
+  })
+
+  return hasAppropriateRole
 }
 
 const availableRoles = {
