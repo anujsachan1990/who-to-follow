@@ -5,7 +5,15 @@ import { ProtectedRoute } from "../components/protected-route"
 import { Navigation } from "../components/nav-bar"
 
 const Account = () => {
-  const { loading, user, isAuthenticated } = useAuth0()
+  const {
+    loading,
+    user,
+    isAuthenticated,
+    checkUserForRole,
+    availableRoles,
+  } = useAuth0()
+
+  const isContributor = checkUserForRole(availableRoles.INFLUENCER_CONTRIBUTOR)
   if (loading || !user) {
     return <p>Loading...</p>
   }
@@ -15,6 +23,9 @@ const Account = () => {
       <ProtectedRoute>
         <Navigation />
         <p>Check out the user data supplied by Auth0, below:</p>
+        {isAuthenticated && !isContributor && (
+          <p>Make sure to verify your email address to become a contributor!</p>
+        )}
         <pre>{isAuthenticated && JSON.stringify(user, null, 2)}</pre>
       </ProtectedRoute>
     </Layout>
