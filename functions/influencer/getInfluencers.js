@@ -4,12 +4,8 @@ const {
   availableRoles,
   checkUserForRole,
   checkHeaderForValidToken,
-} = require("./utils/auth")
-const {
-  availableRoles,
-  checkUserForRole,
-  checkHeaderForValidToken,
 } = require("../utils/auth")
+
 Airtable.configure({
   apiKey: process.env.AIRTABLE_API_KEY,
 })

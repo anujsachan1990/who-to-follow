@@ -42,6 +42,7 @@ const addInfluencer = async (event, context, callback) => {
   } else {
     try {
       body.approved = false
+      body.votes = 0
       const record = await table.create(body)
       returnBody = { record }
     } catch (err) {

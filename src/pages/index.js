@@ -36,7 +36,7 @@ const Index = ({ data, location }) => {
       <SEO title="All Influencers" />
       <Navigation />
 
-      <h1 className="title">Who to Follow</h1>
+      <h1 className="title">Influencers</h1>
       <p className="subtitle">
         A list of developers on Twitter that you should follow!
       </p>

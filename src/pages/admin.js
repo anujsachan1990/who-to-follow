@@ -20,7 +20,7 @@ export default function Dashboard({ location, data }) {
     const loadUnapprovedInfluencers = async () => {
       try {
         const token = await getTokenSilently()
-        const url = "/api/unapprovedInfluencers?query=unapproved"
+        const url = "/api/influencer?query=unapproved"
         const res = await fetch(url, {
           method: "GET",
           headers: {
@@ -54,6 +54,9 @@ export default function Dashboard({ location, data }) {
       <SEO title="Add Influencers" />
       <ProtectedRoute roles={targetRoles}>
         <Navigation />
+        <h1 className="title">Admin Dashboard</h1>
+        <p className="subtitle"></p>
+        <h2>Influencers Waiting for Approval</h2>
         {loadingInfluencers && <p>Loading...</p>}
         {!loadingInfluencers && (
           <div className={InfluencerStyles.list}>

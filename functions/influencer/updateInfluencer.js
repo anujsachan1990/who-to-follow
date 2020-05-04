@@ -1,4 +1,5 @@
 require("dotenv").config()
+const axios = require("axios")
 const Airtable = require("airtable")
 
 Airtable.configure({
@@ -48,6 +49,17 @@ const updateInfluencer = async (event, context, callback) => {
       console.error(err)
       statusCode = 500
       returnBody = { msg: "Failed to create record in Airtable" }
+    }
+    //if the user has been approved, trigger a rebuild so that
+    //the user will now show up in the index page
+    if (approved) {
+      try {
+        await axios.post(process.env.NETLIFY_BUILD_HOOK)
+      } catch (err) {
+        console.error(err)
+        statusCode = 500
+        returnBody = { msg: "Failed to trigger build in Netlify" }
+      }
     }
   }
 
