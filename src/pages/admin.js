@@ -20,7 +20,7 @@ export default function Dashboard({ location, data }) {
     const loadUnapprovedInfluencers = async () => {
       try {
         const token = await getTokenSilently()
-        const url = "/api/unapprovedInfluencers"
+        const url = "/api/unapprovedInfluencers?query=unapproved"
         const res = await fetch(url, {
           method: "GET",
           headers: {
