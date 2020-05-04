@@ -45,7 +45,7 @@ export default function () {
     const postBody = { name, description, handle, tags: selectedTags }
     try {
       const token = await getTokenSilently()
-      const url = "/api/addInfluencer"
+      const url = "/api/influencer"
       const res = await fetch(url, {
         method: "POST",
         body: JSON.stringify(postBody),

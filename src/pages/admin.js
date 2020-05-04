@@ -5,7 +5,7 @@ import SEO from "../components/seo"
 import { Navigation } from "../components/nav-bar"
 import { useAuth0 } from "../utils/auth"
 import InfluencerStyles from "../styles/influencer.module.css"
-import InfluencerCard from "../components/influencer-card"
+import InfluencerApprovalCard from "../components/InfluencerApprovalCard"
 
 export default function Dashboard({ location, data }) {
   const siteTitle = data.site.siteMetadata.title
@@ -13,6 +13,7 @@ export default function Dashboard({ location, data }) {
 
   const targetRoles = [availableRoles.INFLUENCER_SUPER_ADMIN]
   const [records, setRecords] = useState([])
+  const [loadingInfluencers, setLoadingInfluencers] = useState(true)
 
   useEffect(() => {
     //query airtable for all nonapproved records
@@ -30,24 +31,43 @@ export default function Dashboard({ location, data }) {
           console.error("Failed to query influencers")
         }
         const data = await res.json()
-        setRecords(data.records)
+        setRecords(data)
       } catch (err) {
         console.error(err)
+      } finally {
+        setLoadingInfluencers(false)
       }
     }
     if (!loading) loadUnapprovedInfluencers()
   }, [loading, getTokenSilently])
+
+  const handleInfluencerUpdated = (id) => {
+    console.log("influencer updated", id)
+    console.log(records.filter((record) => record.id !== id))
+    setRecords((prevRecords) =>
+      prevRecords.filter((record) => record.recordId !== id)
+    )
+  }
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
       <ProtectedRoute roles={targetRoles}>
         <Navigation />
-        <div className={InfluencerStyles.list}>
-          {records.map((node) => {
-            return <InfluencerCard node={node} key={node.id} />
-          })}
-        </div>
+        {loadingInfluencers && <p>Loading...</p>}
+        {!loadingInfluencers && (
+          <div className={InfluencerStyles.list}>
+            {records.map((node) => {
+              return (
+                <InfluencerApprovalCard
+                  influencer={node}
+                  key={node.recordId}
+                  influencerUpdated={handleInfluencerUpdated}
+                />
+              )
+            })}
+          </div>
+        )}
       </ProtectedRoute>
     </Layout>
   )

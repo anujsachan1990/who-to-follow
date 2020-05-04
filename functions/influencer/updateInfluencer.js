@@ -1,18 +1,18 @@
 require("dotenv").config()
 const Airtable = require("airtable")
 
+Airtable.configure({
+  apiKey: process.env.AIRTABLE_API_KEY,
+})
 const {
   availableRoles,
   checkUserForRole,
   checkHeaderForValidToken,
-} = require("./utils/auth")
-Airtable.configure({
-  apiKey: process.env.AIRTABLE_API_KEY,
-})
+} = require("../utils/auth")
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID)
 const table = base(process.env.AIRTABLE_TABLE_NAME)
 
-exports.handler = async (event, context, callback) => {
+const updateInfluencer = async (event, context, callback) => {
   try {
     user = await checkHeaderForValidToken(event.headers)
     if (
@@ -31,27 +31,29 @@ exports.handler = async (event, context, callback) => {
     }
   }
 
-  const body = JSON.parse(event.body)
   let statusCode = 200
   let returnBody = {}
-  if (!body.name || !body.handle || !body.tags) {
-    statusCode = 403
+  const { id, approved } = JSON.parse(event.body)
+  if (!id || approved === undefined) {
+    statusCode = 400
     returnBody = {
-      msg: "Each influencer must include a name, handle, and tags",
+      msg:
+        "Must include an id and whether or not the influencer is approved or rejected",
     }
   } else {
     try {
-      body.approved = false
-      const record = await table.create(body)
-      returnBody = { record }
+      const updatedRecord = await table.update(id, { approved })
+      returnBody = { record: updatedRecord }
     } catch (err) {
       console.error(err)
       statusCode = 500
       returnBody = { msg: "Failed to create record in Airtable" }
     }
   }
+
   return {
     statusCode,
     body: JSON.stringify(returnBody),
   }
 }
+module.exports = { updateInfluencer }

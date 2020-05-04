@@ -36,7 +36,7 @@ const Index = ({ data, location }) => {
       <SEO title="All Influencers" />
       <Navigation />
 
-      <h1 className="title">Influencers</h1>
+      <h1 className="title">Who to Follow</h1>
       <p className="subtitle">
         A list of developers on Twitter that you should follow!
       </p>
@@ -54,7 +54,7 @@ const Index = ({ data, location }) => {
       ))}
       <div className={InfluencerStyles.list}>
         {visibleInfluencers.map((node) => {
-          return <InfluencerCard node={node} key={node.id} />
+          return <InfluencerCard influencer={node} key={node.id} />
         })}
       </div>
     </Layout>

@@ -17,21 +17,27 @@ export const Navigation = () => {
   const isContributor = checkUserForRole([
     availableRoles.INFLUENCER_CONTRIBUTOR,
   ])
-  console.log(isSuperAdmin)
   return (
-    <nav>
-      {!isAuthenticated && !loading && (
-        <button
-          className={`${css.authButton} ${css["login"]}`}
-          onClick={() =>
-            loginWithRedirect({ appState: `${window.location.pathname}` })
-          }
-        >
-          Log in
-        </button>
-      )}
+    <nav className={css.nav}>
       {isAuthenticated && (
         <>
+          <Link className={css.navItem} to="/">
+            Home
+          </Link>
+          {(isContributor || isSuperAdmin) && (
+            <Link className={css.navItem} to="/addInfluencer">
+              Add
+            </Link>
+          )}
+          {isSuperAdmin && (
+            <Link className={css.navItem} to="/admin">
+              Admin
+            </Link>
+          )}
+
+          <Link className={css.navItem} to="/account">
+            My Account
+          </Link>
           <button
             className={`${css.authButton} ${css["logout"]}`}
             onClick={() =>
@@ -42,24 +48,17 @@ export const Navigation = () => {
           >
             Log out
           </button>
-          <Link className={css.navItem} to="/">
-            Home
-          </Link>
-          {(isContributor || isSuperAdmin) && (
-            <Link className={css.navItem} to="/addInfluencer">
-              Add Influencer
-            </Link>
-          )}
-          {isSuperAdmin && (
-            <Link className={css.navItem} to="/dashboard">
-              Dashboard
-            </Link>
-          )}
-
-          <Link className={css.navItem} to="/account">
-            My Account
-          </Link>
         </>
+      )}
+      {!isAuthenticated && !loading && (
+        <button
+          className={`${css.authButton} ${css["login"]}`}
+          onClick={() =>
+            loginWithRedirect({ appState: `${window.location.pathname}` })
+          }
+        >
+          Log in
+        </button>
       )}
     </nav>
   )

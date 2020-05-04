@@ -1,27 +1,29 @@
 import React from "react"
 import InfluencerStyles from "../styles/influencer.module.css"
 
-export default function InfluencerCard({ node }) {
-  if (!node) return <></>
+export default function InfluencerCard({ influencer, children }) {
+  if (!influencer) return <></>
   return (
-    <article key={node.recordId} className={InfluencerStyles.influencer}>
+    <article key={influencer.recordId} className={InfluencerStyles.influencer}>
       <header>
         <h3 className={InfluencerStyles.name}>
           <a
-            href={"https://www.twitter.com/" + node.fields.handle}
+            href={"https://www.twitter.com/" + influencer.fields.handle}
             rel="noopener noreferrer"
             target="_blank"
           >
-            {node.fields.name}
+            {influencer.fields.name}
           </a>
         </h3>
-        <p className={InfluencerStyles.handle}>@{node.fields.handle}</p>
+        <p className={InfluencerStyles.handle}>@{influencer.fields.handle}</p>
+      </header>
+      <div>
         <p className={InfluencerStyles.description}>
-          {node.fields.description}
+          {influencer.fields.description}
         </p>
         <div className={InfluencerStyles.tagsList}>
-          {node.fields.tags &&
-            node.fields.tags.map((tag, index) => (
+          {influencer.fields.tags &&
+            influencer.fields.tags.map((tag, index) => (
               <small
                 className={InfluencerStyles.tag}
                 key={index}
@@ -32,7 +34,9 @@ export default function InfluencerCard({ node }) {
               </small>
             ))}
         </div>
-      </header>
+        {children && <hr />}
+        {children}
+      </div>
     </article>
   )
 }

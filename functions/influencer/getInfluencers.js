@@ -5,34 +5,22 @@ const {
   availableRoles,
   checkUserForRole,
   checkHeaderForValidToken,
-} = require("./utils/auth")
+} = require("../utils/auth")
 Airtable.configure({
   apiKey: process.env.AIRTABLE_API_KEY,
 })
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID)
 const table = base(process.env.AIRTABLE_TABLE_NAME)
 
-exports.handler = async (event, context, callback) => {
-  try {
-    user = await checkHeaderForValidToken(event.headers)
-    if (!checkUserForRole(user, [availableRoles.INFLUENCER_SUPER_ADMIN])) {
-      throw "User does not have the appropriate role"
-    }
-  } catch (err) {
-    console.error(err)
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ msg: err }),
-    }
-  }
-
+const getInfluencers = async (event, context, callback) => {
   let statusCode = 200
   let returnBody = {}
+  console.log(event)
 
   try {
     const res = await table
       .select({
-        filterByFormula: `{approved} = FALSE()`,
+        filterByFormula: `{approved} = TRUE()`,
       })
       .firstPage()
     const formattedInfluencers = res.map((record) => ({
@@ -50,3 +38,5 @@ exports.handler = async (event, context, callback) => {
     body: JSON.stringify(returnBody),
   }
 }
+
+module.exports = { getInfluencers }
