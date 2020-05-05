@@ -57,7 +57,7 @@ export default function Dashboard({ location, data }) {
       <SEO title="Add Influencers" />
       <ProtectedRoute roles={targetRoles}>
         <Navigation />
-        {successMsg && <Alert msg={successMsg} />}
+        {successMsg && <Alert msg={successMsg} type="success" />}
         <h1 className="title">Admin Dashboard</h1>
         <p className="subtitle"></p>
         <h2>Influencers Waiting for Approval</h2>

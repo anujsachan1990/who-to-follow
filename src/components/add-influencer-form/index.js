@@ -11,6 +11,7 @@ export default function () {
   const [description, setDescription] = useState("")
   const [selectedTags, setSelectedTags] = useState([])
   const [successMsg, setSuccessMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
   const { isLoading: isFetching, response, error, fetchData } = useFetch()
   const tags = [
     "accessibility",
@@ -45,6 +46,12 @@ export default function () {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!name || !description || !handle || selectedTags.length === 0) {
+      setTimeout(() => {
+        setErrorMsg(null)
+      }, 2000)
+      return setErrorMsg("All input fields are required. Including the tags :)")
+    }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
       await fetchData("/api/influencer", "POST", postBody, true)
@@ -60,7 +67,8 @@ export default function () {
 
   return (
     <form className={formStyles.influencerForm} onSubmit={handleSubmit}>
-      {successMsg && <Alert msg={successMsg} />}
+      {successMsg && <Alert msg={successMsg} type="success" />}
+      {errorMsg && <Alert msg={errorMsg} type="error" />}
       <label htmlFor="name" className={formStyles.label}>
         What's the person's name?
       </label>
