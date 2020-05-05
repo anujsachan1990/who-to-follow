@@ -1,3 +1,8 @@
+:root {
+  --success: #d4edda;
+  --success-dark: #155724;
+}
+
 .title {
   text-align: center;
 }

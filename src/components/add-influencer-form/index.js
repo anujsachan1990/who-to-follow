@@ -2,13 +2,16 @@ import React, { useState } from "react"
 import formStyles from "./index.module.css"
 import InfluencerStyles from "../../styles/influencer.module.css"
 import { useAuth0 } from "../../utils/auth"
+import useFetch from "../../hooks/useFetch"
+import Alert from "../alert"
 
 export default function () {
-  const { getTokenSilently } = useAuth0()
   const [name, setName] = useState("")
   const [handle, setHandle] = useState("")
   const [description, setDescription] = useState("")
   const [selectedTags, setSelectedTags] = useState([])
+  const [successMsg, setSuccessMsg] = useState(null)
+  const { isLoading: isFetching, response, error, fetchData } = useFetch()
   const tags = [
     "accessibility",
     "css",
@@ -44,26 +47,20 @@ export default function () {
     e.preventDefault()
     const postBody = { name, description, handle, tags: selectedTags }
     try {
-      const token = await getTokenSilently()
-      const url = "/api/influencer"
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(postBody),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      if (res.status !== 200) {
-        console.error("Failed to create influencer")
-      } else {
-        clearInput()
-      }
+      await fetchData("/api/influencer", "POST", postBody, true)
+      setSuccessMsg(`Success! An admin will review.`)
+      clearInput()
+      setTimeout(() => {
+        setSuccessMsg(null)
+      }, 2000)
     } catch (err) {
       console.error(err)
     }
   }
+
   return (
     <form className={formStyles.influencerForm} onSubmit={handleSubmit}>
+      {successMsg && <Alert msg={successMsg} />}
       <label htmlFor="name" className={formStyles.label}>
         What's the person's name?
       </label>

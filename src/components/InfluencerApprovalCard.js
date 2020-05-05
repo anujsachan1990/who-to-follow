@@ -31,7 +31,7 @@ export default function InfluencerApprovalCard({
       if (res.status !== 200) {
         console.error("Failed to create influencer")
       } else {
-        influencerUpdated(id)
+        influencerUpdated(id, approved)
       }
     } catch (err) {
       console.error(err)

@@ -17,7 +17,7 @@ export default function InfluencerCard({ influencer, children }) {
         </h3>
         <p className={InfluencerStyles.handle}>@{influencer.fields.handle}</p>
       </header>
-      <div>
+      <div className={InfluencerStyles.body}>
         <p className={InfluencerStyles.description}>
           {influencer.fields.description}
         </p>
@@ -34,9 +34,11 @@ export default function InfluencerCard({ influencer, children }) {
               </small>
             ))}
         </div>
+      </div>
+      <footer>
         {children && <hr />}
         {children}
-      </div>
+      </footer>
     </article>
   )
 }
