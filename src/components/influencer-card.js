@@ -10,25 +10,30 @@ export default function InfluencerCard({
   const { fetchData } = useFetch()
   const [votes, setVotes] = useState(influencer.fields.votes)
 
-  const approveOrRejectInfluencer = async (approved) => {
-    const method = approved ? "PUT" : "DELETE"
-    if (method === "DELETE") {
-      const confirmed = window.confirm(
-        "Are you sure you want to reject and delete this user?"
-      )
-      if (!confirmed) return
-    }
+  const approveInfluencer = async () => {
     const id = influencer.id
-    const postBody = { id, approved }
-
+    const postBody = { id, approved: true }
+    console.log(postBody)
     try {
       const res = await fetchData(
         "/api/approveInfluencer",
-        method,
+        "PUT",
         postBody,
         true
       )
-      influencerUpdated(id, approved)
+      influencerUpdated(id, true)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const rejectInfluencer = async () => {
+    const { id } = influencer
+    const postBody = { id }
+
+    try {
+      await fetchData("/api/influencer", "DELETE", postBody, true)
+      influencerUpdated(id, false)
     } catch (err) {
       console.error(err)
     }
@@ -90,12 +95,8 @@ export default function InfluencerCard({
         {!influencer.fields.approved && (
           <>
             {" "}
-            <button onClick={() => approveOrRejectInfluencer(true)}>
-              Approve
-            </button>
-            <button onClick={() => approveOrRejectInfluencer(false)}>
-              Reject
-            </button>
+            <button onClick={() => approveInfluencer()}>Approve</button>
+            <button onClick={() => rejectInfluencer()}>Reject</button>
           </>
         )}
       </footer>
