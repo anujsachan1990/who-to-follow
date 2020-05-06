@@ -5,22 +5,24 @@ export default function InfluencerCard({ influencer, children }) {
   if (!influencer) return <></>
   return (
     <article key={influencer.recordId} className={InfluencerStyles.influencer}>
-      <header>
-        <h3 className={InfluencerStyles.name}>
+      <header className={InfluencerStyles.header}>
+        <h3 className={InfluencerStyles.handle}>
           <a
             href={"https://www.twitter.com/" + influencer.fields.handle}
             rel="noopener noreferrer"
             target="_blank"
           >
-            {influencer.fields.name}
+            @{influencer.fields.handle}
           </a>
         </h3>
-        <p className={InfluencerStyles.handle}>@{influencer.fields.handle}</p>
+        <p className={InfluencerStyles.name}>{influencer.fields.name}</p>
       </header>
       <div className={InfluencerStyles.body}>
         <p className={InfluencerStyles.description}>
           {influencer.fields.description}
         </p>
+      </div>
+      <footer className={InfluencerStyles.footer}>
         <div className={InfluencerStyles.tagsList}>
           {influencer.fields.tags &&
             influencer.fields.tags.map((tag, index) => (
@@ -34,8 +36,6 @@ export default function InfluencerCard({ influencer, children }) {
               </small>
             ))}
         </div>
-      </div>
-      <footer>
         {children && <hr />}
         {children}
       </footer>

@@ -15,7 +15,6 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 const getInfluencers = async (event, context, callback) => {
   let statusCode = 200
   let returnBody = {}
-  console.log(event.queryStringParameters)
 
   const query = event.queryStringParameters["query"]
   //if we are trying to get unapproved influencers

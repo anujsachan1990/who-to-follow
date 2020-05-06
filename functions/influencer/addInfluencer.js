@@ -34,7 +34,7 @@ const addInfluencer = async (event, context, callback) => {
   const body = JSON.parse(event.body)
   let statusCode = 200
   let returnBody = {}
-  if (!body.name || !body.handle || !body.tags) {
+  if (!body.name || !body.handle || !body.tags || body.tags.length === 0) {
     statusCode = 403
     returnBody = {
       msg: "Each influencer must include a name, handle, and tags",

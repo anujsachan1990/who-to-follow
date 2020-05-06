@@ -3,6 +3,7 @@
   --success-dark: #155724;
   --error: #f8d7da;
   --error-dark: #721c24;
+  --primary: #1c2f40;
 }
 
 .title {
@@ -17,6 +18,6 @@
 
 body {
   font-family: sans-serif;
-  background-color: #1c2f40;
+  background-color: var(--primary);
   color: white;
 }

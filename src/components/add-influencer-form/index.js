@@ -52,6 +52,12 @@ export default function () {
       }, 2000)
       return setErrorMsg("All input fields are required. Including the tags :)")
     }
+    if (description.length > 100) {
+      setTimeout(() => {
+        setErrorMsg(null)
+      }, 2000)
+      return setErrorMsg("Title should have a max of 100 characters")
+    }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
       await fetchData("/api/influencer", "POST", postBody, true)
@@ -70,7 +76,7 @@ export default function () {
       {successMsg && <Alert msg={successMsg} type="success" />}
       {errorMsg && <Alert msg={errorMsg} type="error" />}
       <label htmlFor="name" className={formStyles.label}>
-        What's the person's name?
+        Name?
       </label>
       <input
         type="text"
@@ -81,7 +87,7 @@ export default function () {
         className={formStyles.input}
       />
       <label htmlFor="handle" className={formStyles.label}>
-        What's the person's Twitter handle? (don't include @)
+        Twitter handle? (excluding the @)
       </label>
       <input
         type="text"
@@ -91,17 +97,20 @@ export default function () {
         onChange={(e) => setHandle(e.target.value)}
         className={formStyles.input}
       />
-      <label htmlFor="handle" className={formStyles.label}>
-        Tell us a little bit about thie person
+      <label htmlFor="description" className={formStyles.label}>
+        Title/Description (max 100 characters)
       </label>
-      <textarea
-        name="name"
-        placeholder="ex. So and so does lots of cool stuff"
+      <input
+        type="text"
+        name="description"
+        placeholder="ex. Developer Advocate at Cool Company"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className={formStyles.textArea}
-        rows="5"
+        className={formStyles.input}
       />
+      <small className={formStyles.info}>
+        {`${description.length}/100`} characters
+      </small>
       <label htmlFor="tags" className={formStyles.label}>
         What is this person good at?
       </label>

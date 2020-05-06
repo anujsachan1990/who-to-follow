@@ -1,7 +1,7 @@
-const { updateInfluencer } = require("./influencer/updateInfluencer")
-const { deleteInfluencer } = require("./influencer/deleteInfluencer")
-const { addInfluencer } = require("./influencer/addInfluencer")
-const { getInfluencers } = require("./influencer/getInfluencers")
+const { updateInfluencer } = require("./updateInfluencer")
+const { deleteInfluencer } = require("./deleteInfluencer")
+const { addInfluencer } = require("./addInfluencer")
+const { getInfluencers } = require("./getInfluencers")
 exports.handler = async (event, context, callback) => {
   if (event.httpMethod === "GET") {
     return await getInfluencers(event, context, callback)
