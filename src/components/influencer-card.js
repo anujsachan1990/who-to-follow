@@ -1,7 +1,27 @@
 import React from "react"
 import CardStyles from "../styles/card.module.css"
 import TagStyles from "../styles/tag.module.css"
-export default function InfluencerCard({ influencer, children }) {
+import useFetch from "../hooks/useFetch"
+export default function InfluencerCard({ influencer, influencerUpdated }) {
+  const { fetchData } = useFetch()
+  const approveOrRejectInfluencer = async (approved) => {
+    const method = approved ? "PUT" : "DELETE"
+    if (method === "DELETE") {
+      const confirmed = window.confirm(
+        "Are you sure you want to reject and delete this user?"
+      )
+      if (!confirmed) return
+    }
+    const id = influencer.recordId
+    const postBody = { id, approved }
+
+    try {
+      await fetchData("/api/influencer", method, postBody, true)
+      influencerUpdated(id, approved)
+    } catch (err) {
+      console.error(err)
+    }
+  }
   if (!influencer) return <></>
   return (
     <article key={influencer.recordId} className={CardStyles.card}>
@@ -36,8 +56,26 @@ export default function InfluencerCard({ influencer, children }) {
               </small>
             ))}
         </div>
-        {children && <hr />}
-        {children}
+
+        {!influencer.fields.approved && (
+          <>
+            {" "}
+            <button onClick={() => approveOrRejectInfluencer(true)}>
+              Approve
+            </button>
+            <button onClick={() => approveOrRejectInfluencer(false)}>
+              Reject
+            </button>
+          </>
+        )}
+        {influencer.fields.approved && (
+          <>
+            {" "}
+            <button onClick={() => approveOrRejectInfluencer(true)}>
+              Upvote
+            </button>
+          </>
+        )}
       </footer>
     </article>
   )

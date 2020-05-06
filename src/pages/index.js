@@ -80,6 +80,8 @@ export const pageQuery = graphql`
           handle
           tags
           description
+          approved
+          votes
         }
       }
     }

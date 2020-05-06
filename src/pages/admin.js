@@ -5,7 +5,7 @@ import SEO from "../components/seo"
 import { Navigation } from "../components/nav-bar"
 import { useAuth0 } from "../utils/auth"
 import CardStyles from "../styles/card.module.css"
-import InfluencerApprovalCard from "../components/InfluencerApprovalCard"
+import InfluencerCard from "../components/influencer-card"
 import useFetch from "../hooks/useFetch"
 import Alert from "../components/alert"
 
@@ -69,7 +69,7 @@ export default function Dashboard({ location, data }) {
           <div className={CardStyles.list}>
             {records.map((node) => {
               return (
-                <InfluencerApprovalCard
+                <InfluencerCard
                   influencer={node}
                   key={node.recordId}
                   influencerUpdated={handleInfluencerUpdated}
