@@ -12,6 +12,14 @@
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  margin: 0;
+  top: 10px;
+  right: 10px;
 }
 
 .header {

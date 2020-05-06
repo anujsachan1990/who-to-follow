@@ -14,19 +14,13 @@
   font-size: 12px;
 }
 
-.tagSelected {
-  color: white;
-  margin: 5px 3px;
-  padding: 3px 5px;
-  border-radius: 3px;
-  font-size: 12px;
-  cursor: pointer;
+.selected {
+  background-color: var(--secondary-dark);
   position: relative;
-  background-color: #eb4471;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
-.tagSelected::after {
+.selected::after {
   content: "x";
   margin: 0 0 0 7px;
   color: hsl(344, 85%, 30%);

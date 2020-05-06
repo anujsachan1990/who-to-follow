@@ -4,8 +4,8 @@
   --error: #f8d7da;
   --error-dark: #721c24;
   --primary: #1c2f40;
-  --secondary: #d4741e;
-  --secondary-dark: hsl(28, 75%, 40%);
+  --secondary: hsl(359, 68%, 60%);
+  --secondary-dark: hsl(359, 50%, 50%);
 }
 
 .title {

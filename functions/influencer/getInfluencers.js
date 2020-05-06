@@ -40,7 +40,7 @@ const getInfluencers = async (event, context, callback) => {
         })
         .firstPage()
       const formattedInfluencers = res.map((record) => ({
-        recordId: record.id,
+        id: record.id,
         fields: record.fields,
       }))
       returnBody = [...formattedInfluencers]
@@ -57,7 +57,7 @@ const getInfluencers = async (event, context, callback) => {
         })
         .firstPage()
       const formattedInfluencers = res.map((record) => ({
-        recordId: record.id,
+        id: record.id,
         fields: record.fields,
       }))
       returnBody = [...formattedInfluencers]

@@ -11,7 +11,7 @@ export default function () {
   const [selectedTags, setSelectedTags] = useState([])
   const [successMsg, setSuccessMsg] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
-  const { isLoading: isFetching, response, error, fetchData } = useFetch()
+  const { fetchData } = useFetch()
   const tags = [
     "accessibility",
     "css",
@@ -116,10 +116,11 @@ export default function () {
       <div className={TagStyles.tagsList}>
         {tags.map((tag, index) => (
           <span
-            className={
-              selectedTags.includes(tag) ? TagStyles.tagSelected : TagStyles.tag
-            }
+            className={`${TagStyles.tag} ${
+              selectedTags.includes(tag) && TagStyles.selected
+            }`}
             key={index}
+            role="button"
             onClick={() => toggleTag(tag)}
           >
             {tag}

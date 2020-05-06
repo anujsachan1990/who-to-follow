@@ -11,14 +11,9 @@ import Alert from "../components/alert"
 
 export default function Dashboard({ location, data }) {
   const siteTitle = data.site.siteMetadata.title
-  const { availableRoles, getTokenSilently, loading } = useAuth0()
+  const { availableRoles } = useAuth0()
   const [successMsg, setsuccessMsg] = useState(null)
-  const {
-    isLoading: loadingInfluencers,
-    response,
-    error,
-    fetchData,
-  } = useFetch()
+  const { isLoading: loadingInfluencers, fetchData } = useFetch()
   const [records, setRecords] = useState([])
 
   const targetRoles = [availableRoles.INFLUENCER_SUPER_ADMIN]
@@ -38,8 +33,8 @@ export default function Dashboard({ location, data }) {
         console.error(err)
       }
     }
-    if (!loading) loadUnapprovedInfluencers()
-  }, [loading, getTokenSilently])
+    loadUnapprovedInfluencers()
+  }, [])
 
   const handleInfluencerUpdated = (id, approved) => {
     const msg = "User successfully " + (approved ? "approved" : "rejected")
@@ -48,7 +43,7 @@ export default function Dashboard({ location, data }) {
       setsuccessMsg(null)
     }, 2000)
     setRecords((prevRecords) =>
-      prevRecords.filter((record) => record.recordId !== id)
+      prevRecords.filter((record) => record.id !== id)
     )
   }
 
@@ -71,7 +66,7 @@ export default function Dashboard({ location, data }) {
               return (
                 <InfluencerCard
                   influencer={node}
-                  key={node.recordId}
+                  key={node.id}
                   influencerUpdated={handleInfluencerUpdated}
                 />
               )

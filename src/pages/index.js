@@ -32,6 +32,7 @@ const Index = ({ data, location }) => {
       influencers.filter((influencer) => influencer.fields.tags.includes(tag))
     )
   }
+
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All Influencers" />

@@ -1,9 +1,15 @@
-import React from "react"
+import React, { useState } from "react"
 import CardStyles from "../styles/card.module.css"
 import TagStyles from "../styles/tag.module.css"
 import useFetch from "../hooks/useFetch"
-export default function InfluencerCard({ influencer, influencerUpdated }) {
+export default function InfluencerCard({
+  influencer,
+  influencerUpdated,
+  influencerUpvoted,
+}) {
   const { fetchData } = useFetch()
+  const [votes, setVotes] = useState(influencer.fields.votes)
+
   const approveOrRejectInfluencer = async (approved) => {
     const method = approved ? "PUT" : "DELETE"
     if (method === "DELETE") {
@@ -12,19 +18,43 @@ export default function InfluencerCard({ influencer, influencerUpdated }) {
       )
       if (!confirmed) return
     }
-    const id = influencer.recordId
+    const id = influencer.id
     const postBody = { id, approved }
 
     try {
-      await fetchData("/api/influencer", method, postBody, true)
+      const res = await fetchData(
+        "/api/approveInfluencer",
+        method,
+        postBody,
+        true
+      )
       influencerUpdated(id, approved)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const upvoteInfluencer = async () => {
+    const id = influencer.id
+    const postBody = { id, votes: influencer.fields.votes + 1 }
+    try {
+      await fetchData("/api/influencer", "PUT", postBody, true)
+      setVotes((prevVotes) => prevVotes + 1)
     } catch (err) {
       console.error(err)
     }
   }
   if (!influencer) return <></>
   return (
-    <article key={influencer.recordId} className={CardStyles.card}>
+    <article key={influencer.id} className={CardStyles.card}>
+      {/* {influencer.fields.approved && (
+        <p className={CardStyles.badge}>
+          <span onClick={upvoteInfluencer} role="img" aria-label="heart emoji">
+            🧡
+          </span>
+          {votes}
+        </p>
+      )} */}
       <header className={CardStyles.header}>
         <h3 className={CardStyles.title}>
           <a
@@ -65,14 +95,6 @@ export default function InfluencerCard({ influencer, influencerUpdated }) {
             </button>
             <button onClick={() => approveOrRejectInfluencer(false)}>
               Reject
-            </button>
-          </>
-        )}
-        {influencer.fields.approved && (
-          <>
-            {" "}
-            <button onClick={() => approveOrRejectInfluencer(true)}>
-              Upvote
             </button>
           </>
         )}

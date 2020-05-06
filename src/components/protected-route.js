@@ -18,12 +18,6 @@ export const ProtectedRoute = ({ children, roles }) => {
       //if user is authenticated but doesn't have the right role, send them home
       return navigate("/")
     }
-    const asyncLogin = async () => {
-      await loginWithRedirect({
-        appState: { targetUrl: window.location.pathname },
-      })
-    }
-    asyncLogin()
-  }, [loading, isAuthenticated, loginWithRedirect])
+  }, [loading, isAuthenticated, loginWithRedirect, checkUserForRole, roles])
   return children
 }
