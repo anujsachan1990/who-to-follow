@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import formStyles from "./index.module.css"
-import InfluencerStyles from "../../styles/influencer.module.css"
-import { useAuth0 } from "../../utils/auth"
+import TagStyles from "../../styles/tag.module.css"
 import useFetch from "../../hooks/useFetch"
 import Alert from "../alert"
 
@@ -114,13 +113,11 @@ export default function () {
       <label htmlFor="tags" className={formStyles.label}>
         What is this person good at?
       </label>
-      <div className={InfluencerStyles.tagsList}>
+      <div className={TagStyles.tagsList}>
         {tags.map((tag, index) => (
           <span
             className={
-              selectedTags.includes(tag)
-                ? InfluencerStyles.tagSelected
-                : InfluencerStyles.tag
+              selectedTags.includes(tag) ? TagStyles.tagSelected : TagStyles.tag
             }
             key={index}
             onClick={() => toggleTag(tag)}
@@ -129,7 +126,7 @@ export default function () {
           </span>
         ))}
       </div>
-      <button className={formStyles.btn}>Submit</button>
+      <button className="button">Submit</button>
     </form>
   )
 }

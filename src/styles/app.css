@@ -4,6 +4,8 @@
   --error: #f8d7da;
   --error-dark: #721c24;
   --primary: #1c2f40;
+  --secondary: #d4741e;
+  --secondary-dark: hsl(28, 75%, 40%);
 }
 
 .title {
@@ -14,10 +16,28 @@
   text-align: center;
   font-size: 18px;
   font-style: italic;
+  margin-top: -15px;
+  margin-bottom: 2rem;
 }
 
 body {
   font-family: sans-serif;
   background-color: var(--primary);
   color: white;
+}
+
+.button {
+  padding: 7px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  background-color: var(--secondary);
+  color: white;
+  transition: background-color 250ms;
+}
+
+.button:hover {
+  background-color: var(--secondary-dark);
+  border-bottom: none;
 }

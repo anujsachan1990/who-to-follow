@@ -3,9 +3,6 @@
   margin: 0 auto;
 }
 
-.label {
-}
-
 .info {
   display: block;
   margin-top: -10px;
@@ -21,19 +18,4 @@
   border: 1px solid #e3d0bf;
   margin-bottom: 20px;
   margin-top: 5px;
-}
-
-.btn {
-  color: white;
-  background-color: hsl(344, 81%, 59%);
-  border: none;
-  border-radius: 3px;
-  padding: 10px;
-  margin-top: 15px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background-color: hsl(344, 70%, 50%);
 }

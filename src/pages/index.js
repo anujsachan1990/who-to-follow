@@ -4,7 +4,8 @@ import "../styles/app.css"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { Navigation } from "../components/nav-bar"
-import InfluencerStyles from "../styles/influencer.module.css"
+import TagStyles from "../styles/tag.module.css"
+import CardStyles from "../styles/card.module.css"
 import InfluencerCard from "../components/influencer-card"
 
 const Index = ({ data, location }) => {
@@ -39,19 +40,21 @@ const Index = ({ data, location }) => {
       <p className="subtitle">
         A list of developers on Twitter that you should follow!
       </p>
-      {allTags.map((tag, id) => (
-        <span
-          className={InfluencerStyles.tag}
-          key={id}
-          onClick={() => selectTag(tag)}
-          role="button"
-          onKeyDown={() => selectTag(tag)}
-          tabIndex={0}
-        >
-          {tag}
-        </span>
-      ))}
-      <div className={InfluencerStyles.list}>
+      <div className={TagStyles.list}>
+        {allTags.map((tag, id) => (
+          <span
+            className={TagStyles.tag}
+            key={id}
+            onClick={() => selectTag(tag)}
+            role="button"
+            onKeyDown={() => selectTag(tag)}
+            tabIndex={0}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+      <div className={CardStyles.list}>
         {visibleInfluencers.map((node) => {
           return <InfluencerCard influencer={node} key={node.id} />
         })}

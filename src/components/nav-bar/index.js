@@ -39,7 +39,7 @@ export const Navigation = () => {
             My Account
           </Link>
           <button
-            className={`${css.authButton} ${css["logout"]}`}
+            className={`${css.navItem} button`}
             onClick={() =>
               logout({
                 returnTo: window.location.origin,
@@ -52,7 +52,7 @@ export const Navigation = () => {
       )}
       {!isAuthenticated && !loading && (
         <button
-          className={`${css.authButton} ${css["login"]}`}
+          className={`${css.navItem} button`}
           onClick={() =>
             loginWithRedirect({ appState: `${window.location.pathname}` })
           }

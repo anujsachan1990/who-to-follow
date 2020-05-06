@@ -1,0 +1,56 @@
+.list {
+  margin: 50px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 2rem;
+}
+
+.card {
+  border-radius: 4px;
+  border: 2px solid #e3d0bf;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.body {
+  flex-grow: 1;
+}
+
+.title {
+  margin: 0px;
+  margin-bottom: 5px;
+  font-size: 24px;
+}
+
+.title > a,
+.title > a:visited {
+  font-weight: bold;
+  font-weight: 300;
+  color: white;
+  font-style: italic;
+  position: relative;
+  text-decoration: none;
+}
+
+.title > a:hover {
+  border-bottom: 2px solid var(--secondary);
+}
+
+.subtitle {
+  margin-top: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 5px;
+}
+
+.description {
+  margin-top: 0;
+  font-size: 15px;
+}

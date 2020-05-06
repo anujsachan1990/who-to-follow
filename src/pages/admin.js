@@ -4,7 +4,7 @@ import { ProtectedRoute } from "../components/protected-route"
 import SEO from "../components/seo"
 import { Navigation } from "../components/nav-bar"
 import { useAuth0 } from "../utils/auth"
-import InfluencerStyles from "../styles/influencer.module.css"
+import CardStyles from "../styles/card.module.css"
 import InfluencerApprovalCard from "../components/InfluencerApprovalCard"
 import useFetch from "../hooks/useFetch"
 import Alert from "../components/alert"
@@ -60,13 +60,13 @@ export default function Dashboard({ location, data }) {
         {successMsg && <Alert msg={successMsg} type="success" />}
         <h1 className="title">Admin Dashboard</h1>
         <p className="subtitle"></p>
-        <h2>Influencers Waiting for Approval</h2>
+        <h3>Influencers Waiting for Approval</h3>
         {loadingInfluencers && <p>Loading...</p>}
         {!loadingInfluencers && records.length === 0 && (
           <p>Great work! There are no pending submissions.</p>
         )}
         {!loadingInfluencers && records.length > 0 && (
-          <div className={InfluencerStyles.list}>
+          <div className={CardStyles.list}>
             {records.map((node) => {
               return (
                 <InfluencerApprovalCard
