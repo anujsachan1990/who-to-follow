@@ -1,65 +1,9 @@
-import React, { useState } from "react"
+import React from "react"
 import CardStyles from "../styles/card.module.css"
 import TagStyles from "../styles/tag.module.css"
-import useFetch from "../hooks/useFetch"
-export default function InfluencerCard({
-  influencer,
-  influencerUpdated,
-  influencerUpvoted,
-}) {
-  const { fetchData } = useFetch()
-  const [votes, setVotes] = useState(influencer.fields.votes)
-
-  const approveInfluencer = async () => {
-    const id = influencer.id
-    const postBody = { id, approved: true }
-    console.log(postBody)
-    try {
-      const res = await fetchData(
-        "/api/approveInfluencer",
-        "PUT",
-        postBody,
-        true
-      )
-      influencerUpdated(id, true)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const rejectInfluencer = async () => {
-    const { id } = influencer
-    const postBody = { id }
-
-    try {
-      await fetchData("/api/influencer", "DELETE", postBody, true)
-      influencerUpdated(id, false)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const upvoteInfluencer = async () => {
-    const id = influencer.id
-    const postBody = { id, votes: influencer.fields.votes + 1 }
-    try {
-      await fetchData("/api/influencer", "PUT", postBody, true)
-      setVotes((prevVotes) => prevVotes + 1)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-  if (!influencer) return <></>
+export default function InfluencerCard({ influencer }) {
   return (
     <article key={influencer.id} className={CardStyles.card}>
-      {/* {influencer.fields.approved && (
-        <p className={CardStyles.badge}>
-          <span onClick={upvoteInfluencer} role="img" aria-label="heart emoji">
-            🧡
-          </span>
-          {votes}
-        </p>
-      )} */}
       <header className={CardStyles.header}>
         <h3 className={CardStyles.title}>
           <a
@@ -91,14 +35,6 @@ export default function InfluencerCard({
               </small>
             ))}
         </div>
-
-        {!influencer.fields.approved && (
-          <>
-            {" "}
-            <button onClick={() => approveInfluencer()}>Approve</button>
-            <button onClick={() => rejectInfluencer()}>Reject</button>
-          </>
-        )}
       </footer>
     </article>
   )

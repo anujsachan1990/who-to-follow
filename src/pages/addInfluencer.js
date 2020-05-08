@@ -11,14 +11,10 @@ export default function AddInfluencer({ data, location }) {
   const siteTitle = data.site.siteMetadata.title
   const { availableRoles } = useAuth0()
 
-  const targetRoles = [
-    availableRoles.INFLUENCER_SUPER_ADMIN,
-    availableRoles.INFLUENCER_CONTRIBUTOR,
-  ]
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
-      <ProtectedRoute roles={targetRoles}>
+      <ProtectedRoute>
         <Navigation />
         <h1 className="title">Add an Influencer</h1>
         <p className="subtitle">

@@ -4,19 +4,8 @@ import { useAuth0 } from "../../utils/auth"
 import css from "./index.module.css"
 
 export const Navigation = () => {
-  const {
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-    loading,
-    checkUserForRole,
-    availableRoles,
-  } = useAuth0()
+  const { isAuthenticated, loginWithRedirect, logout, loading } = useAuth0()
 
-  const isSuperAdmin = checkUserForRole([availableRoles.INFLUENCER_SUPER_ADMIN])
-  const isContributor = checkUserForRole([
-    availableRoles.INFLUENCER_CONTRIBUTOR,
-  ])
   return (
     <nav className={css.nav}>
       <Link className={css.navItem} to="/">
@@ -24,17 +13,9 @@ export const Navigation = () => {
       </Link>
       {isAuthenticated && (
         <>
-          {(isContributor || isSuperAdmin) && (
-            <Link className={css.navItem} to="/addInfluencer">
-              Add
-            </Link>
-          )}
-          {isSuperAdmin && (
-            <Link className={css.navItem} to="/admin">
-              Admin
-            </Link>
-          )}
-
+          <Link className={css.navItem} to="/addInfluencer">
+            Add
+          </Link>
           <Link className={css.navItem} to="/account">
             My Account
           </Link>

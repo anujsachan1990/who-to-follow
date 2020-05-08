@@ -29,7 +29,6 @@ const useFetch = () => {
     } catch (error) {
       setError(error)
       throw error
-      console.error(error)
     }
   }
   return { response, error, isLoading, fetchData }
