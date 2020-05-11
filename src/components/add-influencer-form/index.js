@@ -3,6 +3,7 @@ import formStyles from "./index.module.css"
 import TagStyles from "../../styles/tag.module.css"
 import useFetch from "../../hooks/useFetch"
 import Alert from "../alert"
+import { useAuth0 } from "../../utils/auth"
 
 export default function () {
   const [name, setName] = useState("")
@@ -11,7 +12,6 @@ export default function () {
   const [selectedTags, setSelectedTags] = useState([])
   const [successMsg, setSuccessMsg] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
-  const { fetchData } = useFetch()
   const tags = [
     "accessibility",
     "css",
@@ -59,12 +59,17 @@ export default function () {
     }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
-      await fetchData("/api/influencer", "POST", postBody, true)
-      setSuccessMsg(`Success! An admin will review.`)
-      clearInput()
-      setTimeout(() => {
-        setSuccessMsg(null)
-      }, 2000)
+      const res = await fetch("/.netlify/functions/addInfluencer", {
+        method: "POST",
+        body: JSON.stringify(postBody),
+      })
+      if (res.status === 200) {
+        setSuccessMsg(`Success! An admin will review.`)
+        clearInput()
+        setTimeout(() => {
+          setSuccessMsg(null)
+        }, 2000)
+      }
     } catch (err) {
       console.error(err)
     }

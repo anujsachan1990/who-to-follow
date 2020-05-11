@@ -26,7 +26,6 @@ export const wrapRootElement = ({ element }) => (
     client_id={Auth0ClientID}
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
-    audience={Auth0Audience}
   >
     {element}
   </Auth0Provider>

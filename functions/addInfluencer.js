@@ -34,5 +34,3 @@ exports.handler = async (event) => {
     }
   }
 }
-
-module.exports = { addInfluencer }
