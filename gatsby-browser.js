@@ -19,13 +19,15 @@ const onRedirectCallback = (appState) => {
 
 const Auth0Domain = process.env.GATSBY_AUTH0_DOMAIN
 const Auth0ClientID = process.env.GATSBY_AUTH0_CLIENT_ID
-const Auth0Audience = process.env.GATSBY_AUTH0_AUDIENCE
+// const Auth0Audience = process.env.GATSBY_AUTH0_AUDIENCE
 export const wrapRootElement = ({ element }) => (
   <Auth0Provider
     domain={Auth0Domain}
     client_id={Auth0ClientID}
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
+    //TODO: include the audience
+    // audience={Auth0Audience}
   >
     {element}
   </Auth0Provider>
