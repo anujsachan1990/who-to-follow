@@ -6,9 +6,21 @@ Airtable.configure({
 })
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID)
 const table = base(process.env.AIRTABLE_TABLE_NAME)
+const {
+  getAccessTokenFromHeaders,
+  validateAccessToken,
+} = require("./utils/auth")
 
 exports.handler = async (event) => {
-  //TODO: parse and validate the access token
+  const token = getAccessTokenFromHeaders(event.headers)
+  let user = await validateAccessToken(token)
+  if (!user) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ err: "User is not authorized" }),
+    }
+  }
+
   const body = JSON.parse(event.body)
   if (!body.name || !body.handle || !body.tags || body.tags.length === 0) {
     return {

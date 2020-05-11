@@ -12,6 +12,7 @@ export default function () {
   const [selectedTags, setSelectedTags] = useState([])
   const [successMsg, setSuccessMsg] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
+  const { getTokenSilently } = useAuth0()
   const tags = [
     "accessibility",
     "css",
@@ -59,11 +60,13 @@ export default function () {
     }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
-      //TODO: logout the original access token
-      //TODO: get the access token and attach it to the request
+      const token = await getTokenSilently()
       const res = await fetch("/.netlify/functions/addInfluencer", {
         method: "POST",
         body: JSON.stringify(postBody),
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       })
       if (res.status === 200) {
         setSuccessMsg(`Success! An admin will review.`)
