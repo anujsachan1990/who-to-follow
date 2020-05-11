@@ -59,6 +59,7 @@ export default function () {
     }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
+      //TODO: logout the original access token
       //TODO: get the access token and attach it to the request
       const res = await fetch("/.netlify/functions/addInfluencer", {
         method: "POST",
