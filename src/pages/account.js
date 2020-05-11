@@ -9,12 +9,12 @@ const Account = () => {
     loading,
     user,
     isAuthenticated,
-    checkUserForRole,
-    availableRoles,
+    doesUserHavePermission,
+    availablePermissions,
   } = useAuth0()
 
-  const isContributor = checkUserForRole([
-    availableRoles.INFLUENCER_CONTRIBUTOR,
+  const isContributor = doesUserHavePermission([
+    availablePermissions.CREATE_INFLUENCER,
   ])
   if (loading || !user) {
     return <p>Loading...</p>

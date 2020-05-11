@@ -9,26 +9,27 @@ const client = jwksClient({
   jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
 })
 
-const ROLES_NAMESPACE = "http://jqq-test.com/roles"
+const NAMESPACE = "http://whotofollow.com"
 
-const checkUserForRole = (user, roles) => {
-  user.roles = user[ROLES_NAMESPACE]
-  if (!user || !user.roles) {
-    return false
-  }
-  let hasAppropriateRole = false
-  roles.forEach((role) => {
-    if (user.roles.includes(role)) {
-      hasAppropriateRole = true
-    }
-  })
+const doesUserHavePermission = (targetPermission) => {
+  if (!user) return false
 
-  return hasAppropriateRole
+  const NAMESPACE = "http://whotofollow.com"
+  const userPermissions = user[NAMESPACE + "/permissions"]
+
+  if (!userPermissions) return false
+  console.log(
+    targetPermission,
+    userPermissions,
+    userPermissions.includes(targetPermission)
+  )
+  return userPermissions.includes(targetPermission)
 }
 
-const availableRoles = {
-  INFLUENCER_CONTRIBUTOR: "Influencer Contributor",
-  INFLUENCER_SUPER_ADMIN: "Influencer Super Admin",
+const availablePermissions = {
+  CREATE_INFLUENCER: "create:influencer",
+  APPROVE_INFLUENCER: "approve:influencer",
+  DELETE_INFLUENCER: "delete:influencer",
 }
 
 const checkHeaderForValidToken = async (headers) => {
@@ -68,7 +69,7 @@ const checkHeaderForValidToken = async (headers) => {
 }
 
 module.exports = {
-  availableRoles,
-  checkUserForRole,
+  availablePermissions,
+  doesUserHavePermission,
   checkHeaderForValidToken,
 }

@@ -2,8 +2,8 @@ require("dotenv").config()
 const Airtable = require("airtable")
 
 const {
-  availableRoles,
-  checkUserForRole,
+  availablePermissions,
+  doesUserHavePermission,
   checkHeaderForValidToken,
 } = require("../utils/auth")
 Airtable.configure({
@@ -15,13 +15,9 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 const addInfluencer = async (event, context, callback) => {
   try {
     user = await checkHeaderForValidToken(event.headers)
-    if (
-      !checkUserForRole(user, [
-        availableRoles.INFLUENCER_CONTRIBUTOR,
-        availableRoles.INFLUENCER_SUPER_ADMIN,
-      ])
-    ) {
-      throw "User does not have the appropriate role"
+    console.log(user)
+    if (!doesUserHavePermission(user, availablePermissions.CREATE_INFLUENCER)) {
+      throw "User does not have the appropriate permission"
     }
   } catch (err) {
     console.error(err)
@@ -58,3 +54,19 @@ const addInfluencer = async (event, context, callback) => {
 }
 
 module.exports = { addInfluencer }
+
+//ASYNC
+exports.handler = async (event, context, callback) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ msg: "Success" }),
+  }
+}
+
+//NOT ASYNC
+exports.handler = async (event, context, callback) => {
+  return callback(null, {
+    statusCode: 200,
+    body: JSON.stringify({ msg: "Success" }),
+  })
+}

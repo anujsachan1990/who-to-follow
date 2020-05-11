@@ -11,12 +11,12 @@ import Alert from "../components/alert"
 
 export default function Dashboard({ location, data }) {
   const siteTitle = data.site.siteMetadata.title
-  const { availableRoles } = useAuth0()
+  const { availablePermissions } = useAuth0()
   const [successMsg, setsuccessMsg] = useState(null)
   const { isLoading: loadingInfluencers, fetchData } = useFetch()
   const [records, setRecords] = useState([])
 
-  const targetRoles = [availableRoles.INFLUENCER_SUPER_ADMIN]
+  const targetPermissions = [availablePermissions.APPROVE_INFLUENCER]
 
   useEffect(() => {
     //query airtable for all nonapproved records
@@ -50,7 +50,7 @@ export default function Dashboard({ location, data }) {
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
-      <ProtectedRoute roles={targetRoles}>
+      <ProtectedRoute permissions={targetPermissions}>
         <Navigation />
         {successMsg && <Alert msg={successMsg} type="success" />}
         <h1 className="title">Admin Dashboard</h1>

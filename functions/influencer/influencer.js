@@ -3,6 +3,7 @@ const { deleteInfluencer } = require("./deleteInfluencer")
 const { addInfluencer } = require("./addInfluencer")
 const { getInfluencers } = require("./getInfluencers")
 exports.handler = async (event, context, callback) => {
+  console.log("doing something")
   if (event.httpMethod === "GET") {
     return await getInfluencers(event, context, callback)
   } else if (event.httpMethod === "POST") {

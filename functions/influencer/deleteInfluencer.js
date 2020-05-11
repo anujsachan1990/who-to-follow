@@ -5,8 +5,8 @@ Airtable.configure({
   apiKey: process.env.AIRTABLE_API_KEY,
 })
 const {
-  availableRoles,
-  checkUserForRole,
+  availablePermissions,
+  doesUserHavePermission,
   checkHeaderForValidToken,
 } = require("../utils/auth")
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID)
@@ -15,13 +15,8 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 const deleteInfluencer = async (event, context, callback) => {
   try {
     user = await checkHeaderForValidToken(event.headers)
-    if (
-      !checkUserForRole(user, [
-        availableRoles.INFLUENCER_CONTRIBUTOR,
-        availableRoles.INFLUENCER_SUPER_ADMIN,
-      ])
-    ) {
-      throw "User does not have the appropriate role"
+    if (!doesUserHavePermission(user, availablePermissions.DELETE_INFLUENCER)) {
+      throw "User does not have the appropriate permission"
     }
   } catch (err) {
     console.error(err)

@@ -10,8 +10,8 @@ const defaultContext = {
   user: null,
   loading: false,
   popupOpen: false,
-  availableRoles: {},
-  checkUserForRole: () => {},
+  availablePermissions: {},
+  doesUserHavePermission: () => {},
   loginWithPopup: () => {},
   handleRedirectCallback: () => {},
   getIdTokenClaims: () => {},
@@ -61,25 +61,20 @@ export const Auth0Provider = ({
     // eslint-disable-next-line
   }, [])
 
-  const checkUserForRole = (roles) => {
-    const ROLES_NAMESPACE = "http://jqq-test.com/roles"
-    if (!user || !user[ROLES_NAMESPACE]) {
-      return false
-    }
+  const doesUserHavePermission = (targetPermission) => {
+    if (!user) return false
 
-    let hasAppropriateRole = false
-    roles.forEach((role) => {
-      if (user[ROLES_NAMESPACE].includes(role)) {
-        hasAppropriateRole = true
-      }
-    })
+    const NAMESPACE = "http://whotofollow.com"
+    const userPermissions = user[NAMESPACE + "/permissions"]
 
-    return hasAppropriateRole
+    if (!userPermissions) return false
+
+    return userPermissions.includes(targetPermission)
   }
 
-  const availableRoles = {
-    INFLUENCER_CONTRIBUTOR: "Influencer Contributor",
-    INFLUENCER_SUPER_ADMIN: "Influencer Super Admin",
+  const availablePermissions = {
+    CREATE_INFLUENCER: "create:influencer",
+    APPROVE_INFLUENCER: "approve:influencer",
   }
 
   const loginWithPopup = async (params = {}) => {
@@ -113,8 +108,8 @@ export const Auth0Provider = ({
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
-        checkUserForRole,
-        availableRoles,
+        doesUserHavePermission,
+        availablePermissions,
         getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
         loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
         getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),

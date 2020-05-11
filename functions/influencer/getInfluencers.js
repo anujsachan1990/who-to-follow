@@ -1,8 +1,8 @@
 require("dotenv").config()
 const Airtable = require("airtable")
 const {
-  availableRoles,
-  checkUserForRole,
+  availablePermissions,
+  doesUserHavePermission,
   checkHeaderForValidToken,
 } = require("../utils/auth")
 
@@ -22,8 +22,10 @@ const getInfluencers = async (event, context, callback) => {
   if (query && query === "unapproved") {
     try {
       user = await checkHeaderForValidToken(event.headers)
-      if (!checkUserForRole(user, [availableRoles.INFLUENCER_SUPER_ADMIN])) {
-        throw "User does not have the appropriate role"
+      if (
+        !doesUserHavePermission(user, availablePermissions.APPROVE_INFLUENCER)
+      ) {
+        throw "User does not have the appropriate permission"
       }
     } catch (err) {
       console.error(err)

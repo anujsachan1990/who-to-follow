@@ -9,23 +9,29 @@ import { useAuth0 } from "../utils/auth"
 
 export default function AddInfluencer({ data, location }) {
   const siteTitle = data.site.siteMetadata.title
-  const { availableRoles } = useAuth0()
+  const { availablePermissions, doesUserHavePermission } = useAuth0()
 
-  const targetRoles = [
-    availableRoles.INFLUENCER_SUPER_ADMIN,
-    availableRoles.INFLUENCER_CONTRIBUTOR,
-  ]
+  const userCanCreate = doesUserHavePermission(
+    availablePermissions.CREATE_INFLUENCER
+  )
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="Add Influencers" />
-      <ProtectedRoute roles={targetRoles}>
+      <ProtectedRoute>
         <Navigation />
         <h1 className="title">Add an Influencer</h1>
-        <p className="subtitle">
-          Know someone who is a great follow on Twitter? Feel free to add them
-          to the list.
-        </p>
-        <AddInfluencerForm />
+        {!userCanCreate && (
+          <p>You need to verify your email beefore you can add influencers</p>
+        )}
+        {userCanCreate && (
+          <>
+            <p className="subtitle">
+              Know someone who is a great follow on Twitter? Feel free to add
+              them to the list.
+            </p>
+            <AddInfluencerForm />
+          </>
+        )}
       </ProtectedRoute>
     </Layout>
   )
