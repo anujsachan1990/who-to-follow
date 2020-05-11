@@ -1,9 +1,9 @@
 import React from "react"
 import css from "./index.module.css"
-export default function Alert({ msg, type }) {
-  return (
-    <div className={`${css.alert} ${css[type]}`}>
-      <p>{msg}</p>
-    </div>
-  )
-}
+
+export const AlertTemplate = ({ style, options, message, close }) => (
+  <div className={`${css.alert} ${css[options.type]}`}>
+    {message}
+    {/* <button onClick={close}>X</button> */}
+  </div>
+)

@@ -7,7 +7,7 @@ import { useAuth0 } from "../utils/auth"
 import CardStyles from "../styles/card.module.css"
 import InfluencerCard from "../components/influencer-card"
 import useFetch from "../hooks/useFetch"
-import Alert from "../components/alert"
+import { useAlert } from "react-alert"
 
 export default function Dashboard({ location, data }) {
   const siteTitle = data.site.siteMetadata.title
@@ -15,6 +15,7 @@ export default function Dashboard({ location, data }) {
   const [successMsg, setsuccessMsg] = useState(null)
   const { isLoading: loadingInfluencers, fetchData } = useFetch()
   const [records, setRecords] = useState([])
+  const alert = useAlert()
 
   const targetPermissions = [availablePermissions.APPROVE_INFLUENCER]
 
@@ -23,7 +24,7 @@ export default function Dashboard({ location, data }) {
     const loadUnapprovedInfluencers = async () => {
       try {
         const data = await fetchData(
-          "/api/influencer?query=unapproved",
+          "/.netlify/functions/influencer?query=unapproved",
           "GET",
           {},
           true
@@ -38,10 +39,7 @@ export default function Dashboard({ location, data }) {
 
   const handleInfluencerUpdated = (id, approved) => {
     const msg = "User successfully " + (approved ? "approved" : "rejected")
-    setsuccessMsg(msg)
-    setTimeout(() => {
-      setsuccessMsg(null)
-    }, 2000)
+    alert.success(msg)
     setRecords((prevRecords) =>
       prevRecords.filter((record) => record.id !== id)
     )
@@ -52,7 +50,6 @@ export default function Dashboard({ location, data }) {
       <SEO title="Add Influencers" />
       <ProtectedRoute permissions={targetPermissions}>
         <Navigation />
-        {successMsg && <Alert msg={successMsg} type="success" />}
         <h1 className="title">Admin Dashboard</h1>
         <p className="subtitle"></p>
         <h3>Influencers Waiting for Approval</h3>

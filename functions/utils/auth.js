@@ -11,18 +11,13 @@ const client = jwksClient({
 
 const NAMESPACE = "http://whotofollow.com"
 
-const doesUserHavePermission = (targetPermission) => {
+const doesUserHavePermission = (user, targetPermission) => {
   if (!user) return false
 
   const NAMESPACE = "http://whotofollow.com"
   const userPermissions = user[NAMESPACE + "/permissions"]
 
   if (!userPermissions) return false
-  console.log(
-    targetPermission,
-    userPermissions,
-    userPermissions.includes(targetPermission)
-  )
   return userPermissions.includes(targetPermission)
 }
 

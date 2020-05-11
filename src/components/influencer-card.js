@@ -16,7 +16,7 @@ export default function InfluencerCard({
     console.log(postBody)
     try {
       const res = await fetchData(
-        "/api/approveInfluencer",
+        "/.netlify/functions/approveInfluencer",
         "PUT",
         postBody,
         true
@@ -32,7 +32,12 @@ export default function InfluencerCard({
     const postBody = { id }
 
     try {
-      await fetchData("/api/influencer", "DELETE", postBody, true)
+      await fetchData(
+        "/.netlify/functions/influencer",
+        "DELETE",
+        postBody,
+        true
+      )
       influencerUpdated(id, false)
     } catch (err) {
       console.error(err)
@@ -43,7 +48,7 @@ export default function InfluencerCard({
     const id = influencer.id
     const postBody = { id, votes: influencer.fields.votes + 1 }
     try {
-      await fetchData("/api/influencer", "PUT", postBody, true)
+      await fetchData("/.netlify/functions/influencer", "PUT", postBody, true)
       setVotes((prevVotes) => prevVotes + 1)
     } catch (err) {
       console.error(err)

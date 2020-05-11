@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import formStyles from "./index.module.css"
 import TagStyles from "../../styles/tag.module.css"
 import useFetch from "../../hooks/useFetch"
-import Alert from "../alert"
+import { useAlert } from "react-alert"
 
 export default function () {
   const [name, setName] = useState("")
@@ -12,6 +12,7 @@ export default function () {
   const [successMsg, setSuccessMsg] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
   const { fetchData } = useFetch()
+  const alert = useAlert()
   const tags = [
     "accessibility",
     "css",
@@ -46,25 +47,15 @@ export default function () {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!name || !description || !handle || selectedTags.length === 0) {
-      setTimeout(() => {
-        setErrorMsg(null)
-      }, 2000)
-      return setErrorMsg("All input fields are required. Including the tags :)")
+      return alert.error("All fields are required, including the tags")
     }
     if (description.length > 100) {
-      setTimeout(() => {
-        setErrorMsg(null)
-      }, 2000)
-      return setErrorMsg("Title should have a max of 100 characters")
+      return alert.error("Title should have a max of 100 characters")
     }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
-      await fetchData("/api/influencer", "POST", postBody, true)
-      setSuccessMsg(`Success! An admin will review.`)
-      clearInput()
-      setTimeout(() => {
-        setSuccessMsg(null)
-      }, 2000)
+      await fetchData("/.netlify/functions/influencer", "POST", postBody, true)
+      alert.success(`Success! An admin will review.`)
     } catch (err) {
       console.error(err)
     }
@@ -72,8 +63,6 @@ export default function () {
 
   return (
     <form className={formStyles.influencerForm} onSubmit={handleSubmit}>
-      {successMsg && <Alert msg={successMsg} type="success" />}
-      {errorMsg && <Alert msg={errorMsg} type="error" />}
       <label htmlFor="name" className={formStyles.label}>
         Name?
       </label>
