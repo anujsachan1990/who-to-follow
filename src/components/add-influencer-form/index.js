@@ -56,6 +56,7 @@ export default function () {
     try {
       await fetchData("/.netlify/functions/influencer", "POST", postBody, true)
       alert.success(`Success! An admin will review.`)
+      clearInput()
     } catch (err) {
       console.error(err)
     }
