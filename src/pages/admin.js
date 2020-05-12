@@ -15,7 +15,7 @@ export default function Dashboard({ location, data }) {
   const [successMsg, setsuccessMsg] = useState(null)
   const { isLoading: loadingInfluencers, fetchData } = useFetch()
   const [records, setRecords] = useState([])
-  const alert = useAlert()
+  // const alert = useAlert()
 
   const targetPermissions = [availablePermissions.APPROVE_INFLUENCER]
 
@@ -39,7 +39,7 @@ export default function Dashboard({ location, data }) {
 
   const handleInfluencerUpdated = (id, approved) => {
     const msg = "User successfully " + (approved ? "approved" : "rejected")
-    alert.success(msg)
+    // alert.success(msg)
     setRecords((prevRecords) =>
       prevRecords.filter((record) => record.id !== id)
     )

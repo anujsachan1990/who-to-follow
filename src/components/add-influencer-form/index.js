@@ -12,7 +12,7 @@ export default function () {
   const [successMsg, setSuccessMsg] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
   const { fetchData } = useFetch()
-  const alert = useAlert()
+  //const alert = useAlert()
   const tags = [
     "accessibility",
     "css",
@@ -47,15 +47,15 @@ export default function () {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!name || !description || !handle || selectedTags.length === 0) {
-      return alert.error("All fields are required, including the tags")
+      return //alert.error("All fields are required, including the tags")
     }
     if (description.length > 100) {
-      return alert.error("Title should have a max of 100 characters")
+      return //alert.error("Title should have a max of 100 characters")
     }
     const postBody = { name, description, handle, tags: selectedTags }
     try {
       await fetchData("/.netlify/functions/influencer", "POST", postBody, true)
-      alert.success(`Success! An admin will review.`)
+      //alert.success(`Success! An admin will review.`)
       clearInput()
     } catch (err) {
       console.error(err)
