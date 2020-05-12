@@ -38,7 +38,7 @@ export default function Dashboard({ location, data }) {
   }, [])
 
   const handleInfluencerUpdated = (id, approved) => {
-    const msg = "User successfully " + (approved ? "approved" : "rejected")
+    const msg = "User was successfully " + (approved ? "approved" : "rejected")
     // alert.success(msg)
     setRecords((prevRecords) =>
       prevRecords.filter((record) => record.id !== id)
