@@ -35,11 +35,11 @@ const Index = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
-      <SEO title="All Influencers" />
+      <SEO title="Who To Follow" />
       <Navigation />
       <h1 className="title">Who To Follow</h1>
       <p className="subtitle">
-        A list of developers on Twitter that you should follow!
+        A list of cool developers on Twitter that you should follow!
       </p>
       <div className={TagStyles.list}>
         {allTags.map((tag, id) => (
