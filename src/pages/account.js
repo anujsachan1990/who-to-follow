@@ -25,9 +25,6 @@ const Account = () => {
       <ProtectedRoute>
         <Navigation />
         <p>Check out the user data supplied by Auth0, below:</p>
-        {isAuthenticated && !isContributor && (
-          <p>Make sure to verify your email address to become a contributor!</p>
-        )}
         <pre>{isAuthenticated && JSON.stringify(user, null, 2)}</pre>
       </ProtectedRoute>
     </Layout>

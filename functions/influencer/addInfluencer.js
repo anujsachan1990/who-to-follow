@@ -1,21 +1,14 @@
 require("dotenv").config()
-const Airtable = require("airtable")
-
+const { table, doesUserExist } = require("../utils/airtable")
 const {
   availablePermissions,
   doesUserHavePermission,
   checkHeaderForValidToken,
 } = require("../utils/auth")
-Airtable.configure({
-  apiKey: process.env.AIRTABLE_API_KEY,
-})
-const base = Airtable.base(process.env.AIRTABLE_BASE_ID)
-const table = base(process.env.AIRTABLE_TABLE_NAME)
 
 const addInfluencer = async (event, context, callback) => {
   try {
     user = await checkHeaderForValidToken(event.headers)
-    console.log(user)
     if (!doesUserHavePermission(user, availablePermissions.CREATE_INFLUENCER)) {
       throw "User does not have the appropriate permission"
     }
@@ -27,46 +20,54 @@ const addInfluencer = async (event, context, callback) => {
     }
   }
 
-  const body = JSON.parse(event.body)
-  let statusCode = 200
-  let returnBody = {}
-  if (!body.name || !body.handle || !body.tags || body.tags.length === 0) {
-    statusCode = 403
-    returnBody = {
-      msg: "Each influencer must include a name, handle, and tags",
+  const { name, handle, image, tags, description, website } = JSON.parse(
+    event.body
+  )
+  if (!name || !handle || !tags || tags.length === 0 || !description) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({
+        msg: "Invalid input",
+      }),
     }
   } else {
     try {
-      body.approved = false
-      body.votes = 0
+      //check if the handle already exists
+      const alreadyExists = await doesUserExist(handle)
+      if (alreadyExists) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ msg: "User already exists" }),
+        }
+      }
+
+      const body = {
+        name,
+        handle,
+        image,
+        description,
+        approved: false,
+        votes: 0,
+        tags,
+        website,
+      }
+      console.log(body)
+
       const record = await table.create(body)
-      returnBody = { record }
+      return {
+        statusCode: 200,
+        body: JSON.stringify(record),
+      }
     } catch (err) {
       console.error(err)
-      statusCode = 500
-      returnBody = { msg: "Failed to create record in Airtable" }
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          msg: err.message || "Failed to create record in Airtable",
+        }),
+      }
     }
-  }
-  return {
-    statusCode,
-    body: JSON.stringify(returnBody),
   }
 }
 
 module.exports = { addInfluencer }
-
-//ASYNC
-exports.handler = async (event, context, callback) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ msg: "Success" }),
-  }
-}
-
-//NOT ASYNC
-exports.handler = async (event, context, callback) => {
-  return callback(null, {
-    statusCode: 200,
-    body: JSON.stringify({ msg: "Success" }),
-  })
-}

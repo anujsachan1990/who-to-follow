@@ -7,6 +7,7 @@ export default function InfluencerCard({
   influencerUpdated,
   influencerUpvoted,
 }) {
+  console.log(influencer)
   const { fetchData } = useFetch()
   const [votes, setVotes] = useState(influencer.fields.votes)
 
@@ -66,6 +67,11 @@ export default function InfluencerCard({
         </p>
       )} */}
       <header className={CardStyles.header}>
+        <img
+          className={CardStyles.image}
+          src={influencer.fields.image}
+          alt=""
+        />
         <h3 className={CardStyles.title}>
           <a
             href={"https://www.twitter.com/" + influencer.fields.handle}

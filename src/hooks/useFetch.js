@@ -25,11 +25,14 @@ const useFetch = () => {
       const json = await res.json()
       setResponse(json)
       setIsLoading(false)
-      return json
+      if (res.status === 200) {
+        return json
+      }
+      throw { msg: json.msg }
     } catch (error) {
+      console.error(error)
       setError(error)
       throw error
-      console.error(error)
     }
   }
   return { response, error, isLoading, fetchData }

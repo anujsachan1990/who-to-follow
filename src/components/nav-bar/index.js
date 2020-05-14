@@ -24,18 +24,18 @@ export const Navigation = () => {
       </Link>
       {isAuthenticated && (
         <>
-          <Link className={css.navItem} to="/addInfluencer">
-            Add
-          </Link>
-          {canShowAdminLink && (
+          {/* <Link className={css.navItem} to="/addYourself">
+            Add Yourself
+          </Link> */}
+          {/* {canShowAdminLink && (
             <Link className={css.navItem} to="/admin">
               Admin
             </Link>
-          )}
+          )} */}
 
-          <Link className={css.navItem} to="/account">
+          {/* <Link className={css.navItem} to="/account">
             My Account
-          </Link>
+          </Link> */}
           <button
             className={`${css.navItem} button`}
             onClick={() =>

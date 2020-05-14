@@ -1,6 +1,7 @@
 // src/react-auth0-spa.js
 import React, { useState, useEffect, useContext } from "react"
 import createAuth0Client from "@auth0/auth0-spa-js"
+const NAMESPACE = "http://whotofollow.com/"
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -52,7 +53,13 @@ export const Auth0Provider = ({
       setIsAuthenticated(isAuthenticated)
 
       if (isAuthenticated) {
-        const user = await auth0FromHook.getUser()
+        let user = await auth0FromHook.getUser()
+        for (let key in user) {
+          if (key.includes(NAMESPACE)) {
+            user[key.replace(NAMESPACE, "")] = user[key]
+            delete user[key]
+          }
+        }
         setUser(user)
       }
       setLoading(false)
@@ -64,8 +71,7 @@ export const Auth0Provider = ({
   const doesUserHavePermission = (targetPermission) => {
     if (!user) return false
 
-    const NAMESPACE = "http://whotofollow.com"
-    const userPermissions = user[NAMESPACE + "/permissions"]
+    const userPermissions = user["permissions"]
 
     if (!userPermissions) return false
 

@@ -25,5 +25,6 @@ export const ProtectedRoute = ({ children, permission }) => {
     doesUserHavePermission,
     permission,
   ])
+  if (loading) return null
   return children
 }

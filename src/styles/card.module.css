@@ -23,8 +23,16 @@
 }
 
 .header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 2rem 2rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.image {
+  margin-right: 10px;
+  border-radius: 5px;
 }
 
 .body {
@@ -35,6 +43,7 @@
   margin: 0px;
   margin-bottom: 5px;
   font-size: 24px;
+  grid-column: 2;
 }
 
 .title > a,
@@ -56,6 +65,7 @@
   font-size: 12px;
   color: rgba(255, 255, 255, 0.6);
   margin-bottom: 5px;
+  grid-column: 2;
 }
 
 .description {
